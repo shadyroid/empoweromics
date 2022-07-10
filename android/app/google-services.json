@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "146155693187",
+    "project_id": "empoweromics-f8c18",
+    "storage_bucket": "empoweromics-f8c18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146155693187:android:2a256e45745220995ae7b6",
+        "android_client_info": {
+          "package_name": "com.empoweromics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146155693187-08m9fph2vse5ecp4q95ojoi7kvuk6mtg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA175ja9Cty5TrPRkKxMPbH8UbvpfxpWDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146155693187-08m9fph2vse5ecp4q95ojoi7kvuk6mtg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "146155693187-hb1dmtg52jbehpe15dp01kiqeeanaqj8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.empoweromics"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
