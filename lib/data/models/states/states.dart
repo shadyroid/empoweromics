@@ -1,3 +1,4 @@
+import 'package:empoweromics/data/models/responses/governrates_response.dart';
 import 'package:meta/meta.dart';
 import 'package:empoweromics/data/models/responses/ads_response.dart';
 import 'package:empoweromics/data/models/responses/auth_response.dart';
@@ -45,6 +46,11 @@ class CompleteDataResponseState extends BaseState {
   CompleteDataResponseState(this.response);
 }
 
+class GovernoratesResponseState extends BaseState {
+  final GovernoratesResponse response;
+
+  GovernoratesResponseState(this.response);
+}
 class ServicesResponseState extends BaseState {
   final ServicesResponse response;
 

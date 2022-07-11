@@ -117,7 +117,7 @@ class VerificationScreenState
                           children: [
                             TextSpan(
                                 text:
-                                    'enter_the4_digit_code_sent_to_your_phone_number'
+                                    'enter_the6_digit_code_sent_to_your_phone_number'
                                         .tr,
                                 style: TextStyle(
                                     color: AppColors.gray,

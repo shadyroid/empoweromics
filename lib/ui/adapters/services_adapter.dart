@@ -69,7 +69,7 @@ class ServicesAdapter {
                       ),
                     ),
                     Text(
-                      data[index].name(Get.locale.languageCode),
+                      data[index].name,
                       style: TextStyle(
                           color: selectedIndex == index
                               ? AppColors.white

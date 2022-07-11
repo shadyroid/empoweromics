@@ -258,7 +258,7 @@ class InstallmentCalculatorScreenState
     for (int i = 0; i < response.data.length; i++) {
       services.add(DropdownMenuItem<Service>(
           child: Text(
-            response.data[i].name(Get.locale.languageCode),
+            response.data[i].name,
           ),
           value: response.data[i]));
     }

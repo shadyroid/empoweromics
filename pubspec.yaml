@@ -42,6 +42,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   toggle_switch: ^2.0.1
   font_awesome_flutter: ^10.1.0
+  group_radio_button: ^1.2.0
 
   flutter:
     sdk: flutter

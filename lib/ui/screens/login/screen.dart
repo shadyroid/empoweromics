@@ -212,20 +212,20 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CompleteDataScreen(value)),
+                      builder: (context) => CompleteDataScreen(userId: value,mobile: mobileNumberTextEditingController.text,)),
                 );
               }
             } else {
               db
                   .collection("users")
                   .doc(value)
-                  .set(User(id: value).toJson())
+                  .set(User(id: value,is_data_completed:false,mobile: mobileNumberTextEditingController.text).toJson())
                   .onError((e, _) => print("Error writing document: $e"));
 
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CompleteDataScreen(value)),
+                    builder: (context) => CompleteDataScreen(userId: value,mobile: mobileNumberTextEditingController.text)),
               );
             }
           },
