@@ -65,11 +65,7 @@ class MainScreenState extends BaseStatefulWidgetState<MainScreen>
         body: BlocListener<MainCubit, BaseState>(
             bloc: cubit,
             listener: (BuildContext context, state) {
-              if (state is LoadingState) {
-                onLoading(state.isLoading);
-              } else if (state is ErrorState) {
-                onApiError(state.response);
-              } else if (state is AdsResponseState) {
+               if (state is AdsResponseState) {
                 _onAdsResponse(state.response);
               } else if (state is ServicesResponseState) {
                 _onServicesResponse(state.response);

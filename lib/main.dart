@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:empoweromics/data/preferences/user_manager.dart';
 import 'package:empoweromics/utils/app_colors.dart';
-import 'package:empoweromics/utils/strings.dart';
+import 'package:empoweromics/utils/app_strings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:toast/toast.dart';
 import 'firebase_options.dart';
@@ -33,7 +33,7 @@ class MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Empoweromics',
         locale: UserPreferences.getLocale(),
-        translations: Strings(),
+        translations: AppStrings(),
         builder: (context, child) {
           return MediaQuery(
             child: child,

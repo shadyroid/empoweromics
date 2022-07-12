@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class Strings extends Translations {
+class AppStrings extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
@@ -8,6 +8,7 @@ class Strings extends Translations {
           "main_screen": "Main screen",
           "installment_calculator": "Installment calculator",
           "login": "Login",
+          "logout": "Logout",
           "overview": "Overview",
           "purchase_new_unit": "Purchase new unit",
           "extend_installment_tenor": "Extend installment tenor",
@@ -40,7 +41,7 @@ class Strings extends Translations {
           "finance_value": "Finance value",
           "unit_value": "Unit value",
           "calculate": "calculate",
-          "errorRequired": "Required",
+          "required": "Required",
           "your_age_plus_tenor_period_must_not_exceed65_years": "Your age plus tenor period must not exceed 65 years",
           "total_monthly_payment": "Total monthly payment",
           "verification_code": "Verification code",
@@ -64,6 +65,12 @@ class Strings extends Translations {
           "send": "Send",
           "company": "Company",
           "apply_now": "Apply now",
+          "phone_number_should_be": "Phone number should be",
+          "phone_number_should_start_with": "Phone number should start with",
+          "number": "Number",
+          "invalid_email": "Invalid email",
+          "your_data_is_sent_successfully": "Your data is sent successfully",
+          "back_to_home": "Back to home",
 
         },
         'ar_EG': {
@@ -71,6 +78,7 @@ class Strings extends Translations {
           "main_screen": "الصفحة الرئيسية",
           "installment_calculator": "حساب الأقساط",
           "login": "تسجيل الدخول",
+          "logout": "تسجيل الخروج",
           "overview": "نظرة عامة",
           "purchase_new_unit": "تمويل شراء وحدات",
           "extend_installment_tenor": "مد فترة التمويل",
@@ -103,7 +111,7 @@ class Strings extends Translations {
           "finance_value": "مبلغ التمويل(بالجنية المصري)",
           "unit_value": "ثمن الوحده",
           "calculate": "احسب",
-          "errorRequired": "مطلوب",
+          "required": "مطلوب",
           "your_age_plus_tenor_period_must_not_exceed65_years": "Your age plus tenor period must not exceed 65 years",
           "total_monthly_payment": "إجمالي الدفعة الشهرية",
           "verification_code": "كود التحقق",
@@ -127,6 +135,12 @@ class Strings extends Translations {
           "send": "إرسال",
           "company": "شركة",
           "apply_now": "قدم الآن",
+          "phone_number_should_be": "يجب أن يكون رقم الهاتف",
+          "phone_number_should_start_with": "يجب أن يبدأ رقم الجوال بـ",
+          "number": "رقم",
+          "invalid_email": "بريد إلكتروني خاطئ",
+          "your_data_is_sent_successfully": "تم إرسال بياناتك بنجاح",
+          "back_to_home": "العودة للرئيسية",
 
         }
       };

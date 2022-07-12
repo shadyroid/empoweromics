@@ -5,15 +5,29 @@ import 'package:empoweromics/ui/screens/login/screen.dart';
 import 'package:empoweromics/ui/screens/splash/screen.dart';
 import 'package:empoweromics/utils/app_colors.dart';
 import 'package:empoweromics/utils/app_sizes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class NavDrawer extends StatelessWidget {
+class NavDrawer extends StatefulWidget {
   int selectedPage;
 
   NavDrawer(this.selectedPage);
+
+  @override
+  State<NavDrawer> createState() => _NavDrawerState();
+}
+
+class _NavDrawerState extends State<NavDrawer> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  FacebookLogin fb = FacebookLogin();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +42,7 @@ class NavDrawer extends StatelessWidget {
                 children: [
                   Padding(
                     padding:
-                    EdgeInsetsDirectional.only(bottom: AppSizes.h0_014),
+                        EdgeInsetsDirectional.only(bottom: AppSizes.h0_014),
                     child: Image.asset(
                       'assets/images/logo.png',
                       width: AppSizes.w0_47,
@@ -41,7 +55,7 @@ class NavDrawer extends StatelessWidget {
                       minHeight: AppSizes.h0_05,
                       minWidth: AppSizes.w0_3,
                       initialLabelIndex:
-                      Get.locale.languageCode == "ar" ? 0 : 1,
+                          Get.locale.languageCode == "ar" ? 0 : 1,
                       cornerRadius: AppSizes.w0_3,
                       activeFgColor: AppColors.red,
                       inactiveBgColor: Colors.white,
@@ -57,8 +71,7 @@ class NavDrawer extends StatelessWidget {
                       ],
                       customTextStyles: [
                         TextStyle(
-                            color: AppColors.black,
-                            fontSize: AppSizes.txt_12),
+                            color: AppColors.black, fontSize: AppSizes.txt_12),
                         TextStyle(
                             color: AppColors.black, fontSize: AppSizes.txt_12)
                       ],
@@ -74,7 +87,7 @@ class NavDrawer extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SplashScreen()),
-                                (route) => false);
+                            (route) => false);
                       },
                     ),
                   ),
@@ -83,17 +96,16 @@ class NavDrawer extends StatelessWidget {
               decoration: BoxDecoration(color: AppColors.colorPrimaryDark),
             ),
           ),
-
           ListTile(
             leading: AppSvg.load(
-              selectedPage == 1
+              widget.selectedPage == 1
                   ? 'assets/icons/ic_main_active.svg'
                   : 'assets/icons/ic_main_inactive.svg',
             ),
             title: Text(
               'main_screen'.tr,
               style: TextStyle(
-                  color: selectedPage == 1
+                  color: widget.selectedPage == 1
                       ? AppColors.colorPrimary
                       : AppColors.black),
             ),
@@ -103,14 +115,14 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: AppSvg.load(
-              selectedPage == 2
+              widget.selectedPage == 2
                   ? 'assets/icons/ic_calculator_active.svg'
                   : 'assets/icons/ic_calculator_inactive.svg',
             ),
             title: Text(
               'installment_calculator'.tr,
               style: TextStyle(
-                  color: selectedPage == 2
+                  color: widget.selectedPage == 2
                       ? AppColors.colorPrimary
                       : AppColors.black),
             ),
@@ -118,19 +130,35 @@ class NavDrawer extends StatelessWidget {
               _onInstallmentCalculatorClick(context);
             },
           ),
-          ListTile(
-            leading: AppSvg.load('assets/icons/ic_login.svg'),
-            title: Text(
-              'login'.tr,
-              style: TextStyle(color: AppColors.black),
+          Visibility(
+            visible: !UserPreferences.isLoggedIn(),
+            child: ListTile(
+              leading: AppSvg.load('assets/icons/ic_login.svg'),
+              title: Text(
+                'login'.tr,
+                style: TextStyle(color: AppColors.black),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
             ),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
+          ),
+          Visibility(
+            visible: UserPreferences.isLoggedIn(),
+            child: ListTile(
+              leading: AppSvg.load('assets/icons/ic_logout.svg'),
+              title: Text(
+                'logout'.tr,
+                style: TextStyle(color: AppColors.black),
+              ),
+              onTap: () {
+                _onLogoutClick(context);
+              },
+            ),
           ),
         ],
       ),
@@ -139,15 +167,15 @@ class NavDrawer extends StatelessWidget {
 
   void _onMainClick(BuildContext context) {
     Navigator.of(context).pop();
-    if (selectedPage != 1) {
+    if (widget.selectedPage != 1) {
       Navigator.of(context).pop();
     }
   }
 
   void _onInstallmentCalculatorClick(BuildContext context) {
     Navigator.of(context).pop();
-    if (selectedPage != 2) {
-      if (selectedPage == 1) {
+    if (widget.selectedPage != 2) {
+      if (widget.selectedPage == 1) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -161,5 +189,20 @@ class NavDrawer extends StatelessWidget {
         );
       }
     }
+  }
+
+  Future<void> _onLogoutClick(context) async {
+    await auth.signOut();
+    await _googleSignIn.signOut();
+    await fb.logOut();
+
+    setState(() {
+      UserPreferences.setLoggedIn(false);
+    });
+    Navigator.of(context).pop();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 }

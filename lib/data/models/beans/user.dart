@@ -30,9 +30,9 @@ class User {
           mobile: json["mobile"],
           company: json["company"],
           governorate_id: json["governorate_id"],
-          is_employed: json["is_employed"],
-          has_banking_obligation: json["has_banking_obligation"],
-          is_adib_customer: json["is_adib_customer"],
+          is_employed: json["is_employed"]??true,
+          has_banking_obligation: json["has_banking_obligation"]??true,
+          is_adib_customer: json["is_adib_customer"]??true,
           is_data_completed: json["is_data_completed"],
         )
       : User();

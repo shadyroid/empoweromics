@@ -1,7 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import 'package:toast/toast.dart';
 
 class Validation {
@@ -12,21 +10,20 @@ class Validation {
 
   String isNotEmpty(value) {
     if (value.isEmpty) {
-      return 'errorRequired'.tr;
+      return 'required'.tr;
     }
     return null;
   }
 
-
-
   String isEmail(value) {
     if (value.isEmpty) {
-      return 'errorRequired'.tr;
+      return 'required'.tr;
     }
-    bool emailValid = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
         .hasMatch(value);
     if (!emailValid) {
-      return 'errorInvalidEmail'.tr;
+      return 'invalid_email'.tr;
     }
 
     return null;
@@ -34,33 +31,15 @@ class Validation {
 
   bool isNotNull(Object value, String message) {
     if (value == null) {
-      Toast.show(message, context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      return false;
-    }
-    return true;
-  }
-  bool isAcceptableAge(int value, String message) {
-    if (value >= 65) {
-      Toast.show(message, context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      return false;
-    }
-    return true;
-  }
-
-
-
-
-  bool isPasswordsMatches(String password, String confirmPassword) {
-    if (password != confirmPassword) {
-      Toast.show('errorPasswordMatchingMessage'.tr, context,
+      Toast.show(message, context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       return false;
     }
     return true;
   }
 
-  bool isChecked(bool isChecked, String message) {
-    if (!isChecked) {
+  bool isAcceptableAge(int value, String message) {
+    if (value >= 65) {
       Toast.show(message, context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       return false;
@@ -75,5 +54,19 @@ class Validation {
       return false;
     }
     return true;
+  }
+
+  String isPhoneNumber(value) {
+    if (value.isEmpty) {
+      return 'required'.tr;
+    }
+    if (value.length != 11) {
+      return "${'phone_number_should_be'.tr} 11 ${'number'.tr}";
+    }
+
+    if (!value.startsWith("01")) {
+      return "${'phone_number_should_start_with'.tr} 01";
+    }
+    return null;
   }
 }

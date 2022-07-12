@@ -80,11 +80,7 @@ class VerificationScreenState
         body: BlocListener<VerificationCubit, BaseState>(
             bloc: cubit,
             listener: (BuildContext context, state) {
-              if (state is LoadingState) {
-                onLoading(state.isLoading);
-              } else if (state is ErrorState) {
-                onApiError(state.response);
-              } else if (state is SendVerificationCodeResponseState) {
+              if (state is SendVerificationCodeResponseState) {
                 _onSendVerificationCodeResponse(state.response);
               }
             },

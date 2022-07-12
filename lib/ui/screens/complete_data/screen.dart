@@ -8,6 +8,7 @@ import 'package:empoweromics/ui/base/base_stateful_widget.dart';
 import 'package:empoweromics/ui/componants/app_button.dart';
 import 'package:empoweromics/ui/componants/type_text_field.dart';
 import 'package:empoweromics/ui/screens/complete_data/cubit.dart';
+import 'package:empoweromics/ui/screens/message/screen.dart';
 import 'package:empoweromics/utils/app_colors.dart';
 import 'package:empoweromics/utils/app_sizes.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,9 +20,9 @@ import 'package:group_radio_button/group_radio_button.dart';
 
 class CompleteDataScreen extends BaseStatefulWidget {
   String userId;
-  String mobile;
+  User user;
 
-  CompleteDataScreen({this.userId, this.mobile});
+  CompleteDataScreen({this.userId, this.user});
 
   @override
   CompleteDataScreenState createState() => CompleteDataScreenState();
@@ -53,7 +54,13 @@ class CompleteDataScreenState
     SchedulerBinding.instance.addPostFrameCallback((_) {
       cubit.requestGovernorates();
     });
-    if (widget.mobile != null) mobileTextEditingController.text = widget.mobile;
+    nameTextEditingController.text = widget.user.name;
+    emailTextEditingController.text = widget.user.email;
+    mobileTextEditingController.text = widget.user.mobile;
+    companyTextEditingController.text = widget.user.company;
+    isEmployedChecked = widget.user.is_employed;
+    hasBankingObligationChecked = widget.user.has_banking_obligation;
+    isAdibCustomerChecked = widget.user.is_adib_customer;
   }
 
   @override
@@ -71,11 +78,7 @@ class CompleteDataScreenState
         body: BlocListener<CompleteDataCubit, BaseState>(
             bloc: cubit,
             listener: (BuildContext context, state) {
-              if (state is LoadingState) {
-                onLoading(state.isLoading);
-              } else if (state is ErrorState) {
-                onApiError(state.response);
-              } else if (state is GovernoratesResponseState) {
+              if (state is GovernoratesResponseState) {
                 _onGovernoratesResponse(state.response);
               }
             },
@@ -134,16 +137,13 @@ class CompleteDataScreenState
                                   onChanged: _onGovernorateSelect),
                             ),
                           ),
-                          Visibility(
-                            visible: widget.mobile == null,
-                            child: TypeTextField(
-                                isRequired: true,
-                                labelText: 'mobile'.tr,
-                                textInputType: TextInputType.phone,
-                                textEditingController:
-                                    mobileTextEditingController,
-                                validator: validation.isNotEmpty),
-                          ),
+                          TypeTextField(
+                              isRequired: true,
+                              labelText: 'mobile'.tr,
+                              textInputType: TextInputType.phone,
+                              textEditingController:
+                                  mobileTextEditingController,
+                              validator: validation.isPhoneNumber),
                           Text("${'employed'.tr} / ${'self_employed'.tr}"),
                           RadioGroup<String>.builder(
                             direction: Axis.horizontal,
@@ -249,30 +249,38 @@ class CompleteDataScreenState
           company: companyTextEditingController.text,
           governorate_id: _selectedGovernorate.id,
           is_employed: isEmployedChecked,
-          mobile: widget.mobile ?? mobileTextEditingController.text,
+          mobile: mobileTextEditingController.text,
           has_banking_obligation: hasBankingObligationChecked,
           is_adib_customer: isAdibCustomerChecked,
         ).toJson())
         .onError((e, _) => print("Error writing document: $e"));
-    UserPreferences.setName(nameTextEditingController.text);
-    UserPreferences.setEmail(emailTextEditingController.text);
+    UserPreferences.setLoggedIn(true);
 
-    Navigator.pop(context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              MessageScreen('your_data_is_sent_successfully'.tr)),
+    );
   }
 
   bool _isValid() {
-    return inputsFormKey.currentState.validate();
+    return  inputsFormKey.currentState.validate()&&validation.isNotNull(_selectedGovernorate, 'select_governorate'.tr);
   }
 
   void _onGovernoratesResponse(GovernoratesResponse response) {
     for (int i = 0; i < response.data.length; i++) {
+      if (widget.user.governorate_id != null &&
+          response.data[i].id == widget.user.governorate_id) {
+        _selectedGovernorate = response.data[i];
+      }
       governorates.add(DropdownMenuItem<Governorate>(
           child: Text(
             response.data[i].name,
           ),
           value: response.data[i]));
     }
-    _selectedGovernorate = null;
+
     setState(() {});
   }
 

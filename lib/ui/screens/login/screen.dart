@@ -35,11 +35,13 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
       TextEditingController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   GoogleSignIn _googleSignIn;
+  FacebookLogin fb;
 
   @override
   void initState() {
     super.initState();
     _googleSignIn = GoogleSignIn();
+    fb = FacebookLogin();
   }
 
   @override
@@ -59,11 +61,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
         body: BlocListener<LoginCubit, BaseState>(
             bloc: cubit,
             listener: (BuildContext context, state) {
-              if (state is LoadingState) {
-                onLoading(state.isLoading);
-              } else if (state is ErrorState) {
-                onApiError(state.response);
-              } else if (state is LoginResponseState) {
+              if (state is LoginResponseState) {
                 _onLoginResponse(state.response);
               }
             },
@@ -109,7 +107,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
                             textInputType: TextInputType.number,
                             textEditingController:
                                 mobileNumberTextEditingController,
-                            validator: validation.isNotEmpty),
+                            validator: validation.isPhoneNumber),
                         SizedBox(
                           height: AppSizes.h0_018,
                         ),
@@ -216,7 +214,6 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
 
   Future<void> _onGoogleSignInClick() async {
     try {
-      await _googleSignIn.signOut();
       GoogleSignInAccount account = await _googleSignIn.signIn();
       _requestLogin(account.id, null);
     } catch (error) {
@@ -231,22 +228,17 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
         if (doc.exists) {
           final data = doc.data() as Map<String, dynamic>;
           User user = User.fromJson(data);
-          if (user.is_data_completed) {
-            UserPreferences.setName(user.name);
-            UserPreferences.setEmail(user.email);
-
-            Navigator.pop(context);
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CompleteDataScreen(
-                        userId: value,
-                        mobile: mobile,
-                      )),
-            );
-          }
+          UserPreferences.setLoggedIn(true);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CompleteDataScreen(
+                      userId: value,
+                      user: user,
+                    )),
+          );
         } else {
+          UserPreferences.setLoggedIn(true);
           db
               .collection("users")
               .doc(value)
@@ -258,8 +250,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) => CompleteDataScreen(
-                    userId: value,
-                    mobile: mobileNumberTextEditingController.text)),
+                    userId: value, user: User(mobile: mobile))),
           );
         }
       },
@@ -269,8 +260,6 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
 
   Future<void> _onFacebookLoginClick() async {
     // Create an instance of FacebookLogin
-    final fb = FacebookLogin();
-    await fb.logOut();
     final res = await fb.logIn(permissions: [
       FacebookPermission.publicProfile,
       FacebookPermission.email,
