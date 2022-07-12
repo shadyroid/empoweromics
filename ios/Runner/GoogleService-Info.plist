@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>146155693187-hb1dmtg52jbehpe15dp01kiqeeanaqj8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.146155693187-hb1dmtg52jbehpe15dp01kiqeeanaqj8</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>146155693187-lm71ie08ks0mnnhaq1j5hfi8u86f2780.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCkj_hMbHRsPRTjOK_1PEk4yCA5tbvpc_E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>146155693187</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.empoweromics</string>
+	<key>PROJECT_ID</key>
+	<string>empoweromics-f8c18</string>
+	<key>STORAGE_BUCKET</key>
+	<string>empoweromics-f8c18.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:146155693187:ios:3ba3259f8e2bf5625ae7b6</string>
+</dict>
+</plist>
