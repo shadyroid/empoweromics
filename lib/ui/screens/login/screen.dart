@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -39,7 +40,6 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
   void initState() {
     super.initState();
     _googleSignIn = GoogleSignIn();
-
   }
 
   @override
@@ -139,7 +139,10 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
                             SizedBox(
                               width: AppSizes.w0_05,
                             ),
-                            SvgPicture.asset("assets/icons/ic_facebook.svg")
+                            GestureDetector(
+                                onTap: _onFacebookLoginClick,
+                                child: SvgPicture.asset(
+                                    "assets/icons/ic_facebook.svg"))
                           ],
                         ),
                         SizedBox(
@@ -206,7 +209,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
               VerificationScreen(mobileNumberTextEditingController.text)),
     ).then((value) {
       if (value != null) {
-        _requestLogin(value);
+        _requestLogin(value, mobileNumberTextEditingController.text);
       }
     });
   }
@@ -214,14 +217,14 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
   Future<void> _onGoogleSignInClick() async {
     try {
       await _googleSignIn.signOut();
-0      GoogleSignInAccount account = await _googleSignIn.signIn();
-      _requestLogin(account.id);
+      GoogleSignInAccount account = await _googleSignIn.signIn();
+      _requestLogin(account.id, null);
     } catch (error) {
       print(error);
     }
   }
 
-  void _requestLogin(value) {
+  void _requestLogin(value, mobile) {
     final docRef = db.collection("users").doc(value);
     docRef.get().then(
       (DocumentSnapshot doc) {
@@ -240,7 +243,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
               MaterialPageRoute(
                   builder: (context) => CompleteDataScreen(
                         userId: value,
-                        mobile: mobileNumberTextEditingController.text,
+                        mobile: mobile,
                       )),
             );
           }
@@ -248,10 +251,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
           db
               .collection("users")
               .doc(value)
-              .set(User(
-                      id: value,
-                      is_data_completed: false,
-                      mobile: mobileNumberTextEditingController.text)
+              .set(User(id: value, is_data_completed: false, mobile: mobile)
                   .toJson())
               .onError((e, _) => print("Error writing document: $e"));
 
@@ -266,5 +266,31 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
       },
       onError: (e) => print("Error getting document: $e"),
     );
+  }
+
+  Future<void> _onFacebookLoginClick() async {
+    // Create an instance of FacebookLogin
+    final fb = FacebookLogin();
+    await fb.logOut();
+    final res = await fb.logIn(permissions: [
+      FacebookPermission.publicProfile,
+      FacebookPermission.email,
+      FacebookPermission.userFriends,
+    ]);
+
+    switch (res.status) {
+      case FacebookLoginStatus.success:
+        final profile = await fb.getUserProfile();
+        _requestLogin(profile.userId, null);
+
+        break;
+      case FacebookLoginStatus.cancel:
+        // User cancel log in
+        break;
+      case FacebookLoginStatus.error:
+        // Log in failed
+        print('Error while log in: ${res.error}');
+        break;
+    }
   }
 }
