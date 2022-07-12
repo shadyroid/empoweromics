@@ -1,5 +1,6 @@
 import 'package:empoweromics/data/preferences/user_manager.dart';
 import 'package:empoweromics/ui/componants/app_svg.dart';
+import 'package:empoweromics/ui/screens/faqs/screen.dart';
 import 'package:empoweromics/ui/screens/installment_calculator/screen.dart';
 import 'package:empoweromics/ui/screens/login/screen.dart';
 import 'package:empoweromics/ui/screens/splash/screen.dart';
@@ -130,6 +131,23 @@ class _NavDrawerState extends State<NavDrawer> {
               _onInstallmentCalculatorClick(context);
             },
           ),
+          ListTile(
+            leading: AppSvg.load(
+              widget.selectedPage == 2
+                  ? 'assets/icons/ic_faq_active.svg'
+                  : 'assets/icons/ic_faq_inactive.svg',
+            ),
+            title: Text(
+              'faqs'.tr,
+              style: TextStyle(
+                  color: widget.selectedPage == 2
+                      ? AppColors.colorPrimary
+                      : AppColors.black),
+            ),
+            onTap: () {
+              _onFAQsClick(context);
+            },
+          ),
           Visibility(
             visible: !UserPreferences.isLoggedIn(),
             child: ListTile(
@@ -204,5 +222,24 @@ class _NavDrawerState extends State<NavDrawer> {
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
+  }
+
+  void _onFAQsClick(BuildContext context) {
+    Navigator.of(context).pop();
+    if (widget.selectedPage != 3) {
+      if (widget.selectedPage == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FAQsScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FAQsScreen()),
+        );
+      }
+    }
   }
 }

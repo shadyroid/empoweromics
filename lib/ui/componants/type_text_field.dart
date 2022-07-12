@@ -44,7 +44,7 @@ class TypeTextField extends StatelessWidget {
             text: TextSpan(
                 text: labelText,
                 style: TextStyle(
-                    color: AppColors.darkerGray, fontFamily: 'tajawal'),
+                    color: AppColors.darkerGray, fontFamily: 'din'),
                 children: isRequired == null
                     ? null
                     : [

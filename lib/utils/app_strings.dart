@@ -71,6 +71,8 @@ class AppStrings extends Translations {
           "invalid_email": "Invalid email",
           "your_data_is_sent_successfully": "Your data is sent successfully",
           "back_to_home": "Back to home",
+          "please_check_your_internet_connection": "Please check your internet connection",
+          "faqs": "FAQs",
 
         },
         'ar_EG': {
@@ -141,6 +143,8 @@ class AppStrings extends Translations {
           "invalid_email": "بريد إلكتروني خاطئ",
           "your_data_is_sent_successfully": "تم إرسال بياناتك بنجاح",
           "back_to_home": "العودة للرئيسية",
+          "please_check_your_internet_connection": "الرجاء التحقق من اتصال الانترنت الخاص بك",
+          "faqs": "أسئلة",
 
         }
       };

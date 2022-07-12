@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:empoweromics/data/models/beans/user.dart';
-import 'package:empoweromics/data/models/responses/auth_response.dart';
+import 'package:empoweromics/data/models/responses/login_response.dart';
 import 'package:empoweromics/data/models/states/states.dart';
 import 'package:empoweromics/data/preferences/user_manager.dart';
 import 'package:empoweromics/ui/base/base_stateful_widget.dart';
@@ -195,7 +195,15 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
     return inputsFormKey.currentState.validate();
   }
 
-  void _onLoginResponse(AuthResponse response) {}
+  void _onLoginResponse(LoginResponse response) {
+    UserPreferences.setLoggedIn(true);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              CompleteDataScreen(user: response.user)),
+    );
+  }
 
   void _onLoginClick() {
     if (!_isValid()) return;
@@ -207,7 +215,8 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
               VerificationScreen(mobileNumberTextEditingController.text)),
     ).then((value) {
       if (value != null) {
-        _requestLogin(value, mobileNumberTextEditingController.text);
+        cubit.requestLogin(value, mobileNumberTextEditingController.text);
+
       }
     });
   }
@@ -215,47 +224,13 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
   Future<void> _onGoogleSignInClick() async {
     try {
       GoogleSignInAccount account = await _googleSignIn.signIn();
-      _requestLogin(account.id, null);
+      cubit.requestLogin(account.id, null);
     } catch (error) {
       print(error);
     }
   }
 
   void _requestLogin(value, mobile) {
-    final docRef = db.collection("users").doc(value);
-    docRef.get().then(
-      (DocumentSnapshot doc) {
-        if (doc.exists) {
-          final data = doc.data() as Map<String, dynamic>;
-          User user = User.fromJson(data);
-          UserPreferences.setLoggedIn(true);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CompleteDataScreen(
-                      userId: value,
-                      user: user,
-                    )),
-          );
-        } else {
-          UserPreferences.setLoggedIn(true);
-          db
-              .collection("users")
-              .doc(value)
-              .set(User(id: value, is_data_completed: false, mobile: mobile)
-                  .toJson())
-              .onError((e, _) => print("Error writing document: $e"));
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CompleteDataScreen(
-                    userId: value, user: User(mobile: mobile))),
-          );
-        }
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
   }
 
   Future<void> _onFacebookLoginClick() async {
@@ -269,7 +244,7 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
     switch (res.status) {
       case FacebookLoginStatus.success:
         final profile = await fb.getUserProfile();
-        _requestLogin(profile.userId, null);
+        cubit.requestLogin(profile.userId, null);
 
         break;
       case FacebookLoginStatus.cancel:

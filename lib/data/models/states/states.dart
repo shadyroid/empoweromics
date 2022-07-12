@@ -1,7 +1,8 @@
+import 'package:empoweromics/data/models/responses/faqs_response.dart';
 import 'package:empoweromics/data/models/responses/governrates_response.dart';
 import 'package:meta/meta.dart';
 import 'package:empoweromics/data/models/responses/ads_response.dart';
-import 'package:empoweromics/data/models/responses/auth_response.dart';
+import 'package:empoweromics/data/models/responses/login_response.dart';
 import 'package:empoweromics/data/models/responses/base_response.dart';
 import 'package:empoweromics/data/models/responses/services_response.dart';
 
@@ -23,7 +24,7 @@ class ErrorState extends BaseState {
 }
 
 class LoginResponseState extends BaseState {
-  final AuthResponse response;
+  final LoginResponse response;
 
   LoginResponseState(this.response);
 }
@@ -61,4 +62,9 @@ class AdsResponseState extends BaseState {
   final AdsResponse response;
 
   AdsResponseState(this.response);
+}
+class FAQsResponseState extends BaseState {
+  final FAQsResponse response;
+
+  FAQsResponseState(this.response);
 }

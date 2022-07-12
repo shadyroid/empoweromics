@@ -19,10 +19,9 @@ import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
 class CompleteDataScreen extends BaseStatefulWidget {
-  String userId;
   User user;
 
-  CompleteDataScreen({this.userId, this.user});
+  CompleteDataScreen({this.user});
 
   @override
   CompleteDataScreenState createState() => CompleteDataScreenState();
@@ -241,7 +240,7 @@ class CompleteDataScreenState
 
     db
         .collection("users")
-        .doc(widget.userId)
+        .doc(widget.user.id)
         .set(User(
           is_data_completed: true,
           name: nameTextEditingController.text,

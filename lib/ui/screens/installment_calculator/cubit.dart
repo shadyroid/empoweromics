@@ -1,6 +1,6 @@
 import 'package:empoweromics/data/models/responses/services_response.dart';
 import 'package:get/get.dart';
-import 'package:empoweromics/data/models/responses/auth_response.dart';
+import 'package:empoweromics/data/models/responses/login_response.dart';
 
 import 'package:empoweromics/data/models/responses/base_response.dart';
 
@@ -14,7 +14,7 @@ class InstallmentCalculatorCubit extends BaseCubit {
     emit(LoadingState(true));
     if (await isInternetNotAvailable()) {
       emit(LoadingState(false));
-      emit(ErrorState(BaseResponse("errorInternetError".tr, false, 0)));
+      emit(ErrorState(BaseResponse("please_check_your_internet_connection".tr, false, 0)));
     } else {
       ServicesResponse _response = await apiService.requestServices();
       emit(LoadingState(false));
