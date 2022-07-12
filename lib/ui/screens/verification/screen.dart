@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:empoweromics/data/models/responses/base_response.dart';
 import 'package:empoweromics/data/models/states/states.dart';
 import 'package:empoweromics/ui/base/base_stateful_widget.dart';
@@ -252,9 +254,11 @@ class VerificationScreenState
     await auth.verifyPhoneNumber(
       phoneNumber: '+2${widget.mobile}',
       verificationCompleted: (PhoneAuthCredential credential) async {
-        UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-        _onVerificationResponse(userCredential);
+        if (Platform.isAndroid) {
+          UserCredential userCredential =
+              await auth.signInWithCredential(credential);
+          _onVerificationResponse(userCredential);
+        }
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {

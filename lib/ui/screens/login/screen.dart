@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:empoweromics/data/models/beans/user.dart';
-import 'package:empoweromics/data/models/requests/login_request.dart';
 import 'package:empoweromics/data/models/responses/auth_response.dart';
 import 'package:empoweromics/data/models/states/states.dart';
 import 'package:empoweromics/data/preferences/user_manager.dart';
@@ -21,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends BaseStatefulWidget {
   @override
@@ -33,6 +33,14 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
   TextEditingController mobileNumberTextEditingController =
       TextEditingController();
   FirebaseFirestore db = FirebaseFirestore.instance;
+  GoogleSignIn _googleSignIn;
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn = GoogleSignIn();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +132,10 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SvgPicture.asset("assets/icons/ic_google.svg"),
+                            GestureDetector(
+                                onTap: _onGoogleSignInClick,
+                                child: SvgPicture.asset(
+                                    "assets/icons/ic_google.svg")),
                             SizedBox(
                               width: AppSizes.w0_05,
                             ),
@@ -195,43 +206,65 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
               VerificationScreen(mobileNumberTextEditingController.text)),
     ).then((value) {
       if (value != null) {
-        final docRef = db.collection("users").doc(value);
-        docRef.get().then(
-          (DocumentSnapshot doc) {
-            if (doc.exists) {
-              final data = doc.data() as Map<String, dynamic>;
-              User user = User.fromJson(data);
-              if (user.is_data_completed) {
-
-                UserPreferences.setName(user.name);
-                UserPreferences.setEmail(user.email);
-                UserPreferences.setMobileNumber(user.mobile);
-
-                Navigator.pop(context);
-              } else {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CompleteDataScreen(userId: value,mobile: mobileNumberTextEditingController.text,)),
-                );
-              }
-            } else {
-              db
-                  .collection("users")
-                  .doc(value)
-                  .set(User(id: value,is_data_completed:false,mobile: mobileNumberTextEditingController.text).toJson())
-                  .onError((e, _) => print("Error writing document: $e"));
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CompleteDataScreen(userId: value,mobile: mobileNumberTextEditingController.text)),
-              );
-            }
-          },
-          onError: (e) => print("Error getting document: $e"),
-        );
+        _requestLogin(value);
       }
     });
+  }
+
+  Future<void> _onGoogleSignInClick() async {
+    try {
+      await _googleSignIn.signOut();
+0      GoogleSignInAccount account = await _googleSignIn.signIn();
+      _requestLogin(account.id);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  void _requestLogin(value) {
+    final docRef = db.collection("users").doc(value);
+    docRef.get().then(
+      (DocumentSnapshot doc) {
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          User user = User.fromJson(data);
+          if (user.is_data_completed) {
+            UserPreferences.setName(user.name);
+            UserPreferences.setEmail(user.email);
+            UserPreferences.setMobileNumber(user.mobile);
+
+            Navigator.pop(context);
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CompleteDataScreen(
+                        userId: value,
+                        mobile: mobileNumberTextEditingController.text,
+                      )),
+            );
+          }
+        } else {
+          db
+              .collection("users")
+              .doc(value)
+              .set(User(
+                      id: value,
+                      is_data_completed: false,
+                      mobile: mobileNumberTextEditingController.text)
+                  .toJson())
+              .onError((e, _) => print("Error writing document: $e"));
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CompleteDataScreen(
+                    userId: value,
+                    mobile: mobileNumberTextEditingController.text)),
+          );
+        }
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
   }
 }
