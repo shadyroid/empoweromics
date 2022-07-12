@@ -53,7 +53,7 @@ class CompleteDataScreenState
     SchedulerBinding.instance.addPostFrameCallback((_) {
       cubit.requestGovernorates();
     });
-    if(widget.mobile!=null) mobileTextEditingController.text = widget.mobile;
+    if (widget.mobile != null) mobileTextEditingController.text = widget.mobile;
   }
 
   @override
@@ -249,13 +249,13 @@ class CompleteDataScreenState
           company: companyTextEditingController.text,
           governorate_id: _selectedGovernorate.id,
           is_employed: isEmployedChecked,
+          mobile: widget.mobile ?? mobileTextEditingController.text,
           has_banking_obligation: hasBankingObligationChecked,
           is_adib_customer: isAdibCustomerChecked,
         ).toJson())
         .onError((e, _) => print("Error writing document: $e"));
     UserPreferences.setName(nameTextEditingController.text);
     UserPreferences.setEmail(emailTextEditingController.text);
-    UserPreferences.setMobileNumber(mobileTextEditingController.text);
 
     Navigator.pop(context);
   }

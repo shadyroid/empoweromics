@@ -30,9 +30,13 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.146155693187-hb1dmtg52jbehpe15dp01kiqeeanaqj8</string>
+                <string>fb451188510162640</string>
 			</array>
 		</dict>
 	</array>
+
+
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -56,20 +60,34 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-    <!-- Google Sign-in Section -->
-    <key>CFBundleURLTypes</key>
+
+
+
+
+
+    <key>FacebookAppID</key>
+    <string>451188510162640</string>
+    <key>FacebookClientToken</key>
+    <string>af8f4144d3b5eeeb2ac6340989865528</string>
+    <key>FacebookDisplayName</key>
+    <string>Empoweromics</string>
+    <key>LSApplicationQueriesSchemes</key>
     <array>
-    	<dict>
-    		<key>CFBundleTypeRole</key>
-    		<string>Editor</string>
-    		<key>CFBundleURLSchemes</key>
-    		<array>
-    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-            	<string>com.googleusercontent.apps.146155693187-hb1dmtg52jbehpe15dp01kiqeeanaqj8</string>
-    		</array>
-    	</dict>
+      <string>fbapi</string>
+      <string>fbapi20130214</string>
+      <string>fbapi20130410</string>
+      <string>fbapi20130702</string>
+      <string>fbapi20131010</string>
+      <string>fbapi20131219</string>
+      <string>fbapi20140410</string>
+      <string>fbapi20140116</string>
+      <string>fbapi20150313</string>
+      <string>fbapi20150629</string>
+      <string>fbapi20160328</string>
+      <string>fbauth</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
     </array>
-    <!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

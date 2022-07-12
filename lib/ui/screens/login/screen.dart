@@ -234,7 +234,6 @@ class LoginScreenState extends BaseStatefulWidgetState<LoginScreen> {
           if (user.is_data_completed) {
             UserPreferences.setName(user.name);
             UserPreferences.setEmail(user.email);
-            UserPreferences.setMobileNumber(user.mobile);
 
             Navigator.pop(context);
           } else {

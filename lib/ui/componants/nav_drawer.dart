@@ -21,62 +21,69 @@ class NavDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(color: AppColors.colorPrimaryDark),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.only(bottom: AppSizes.h0_014),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: AppSizes.w0_47,
-                    height: AppSizes.h0_1,
+          SizedBox(
+            height: AppSizes.h0_28,
+            child: DrawerHeader(
+              child: Column(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsetsDirectional.only(bottom: AppSizes.h0_014),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: AppSizes.w0_47,
+                      height: AppSizes.h0_1,
+                    ),
                   ),
-                ),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: ToggleSwitch(
-                    minHeight: AppSizes.h0_05,
-                    minWidth: AppSizes.w0_3,
-                    initialLabelIndex: Get.locale.languageCode == "ar" ? 0 : 1,
-                    cornerRadius: AppSizes.w0_3,
-                    activeFgColor: AppColors.red,
-                    inactiveBgColor: Colors.white,
-                    inactiveFgColor: Colors.white,
-                    totalSwitches: 2,
-                    labels: [
-                      'arabic_language_btn'.tr,
-                      'english_language_btn'.tr
-                    ],
-                    activeBgColors: [
-                      [AppColors.red],
-                      [AppColors.red]
-                    ],
-                    customTextStyles: [
-                      TextStyle(
-                          color: AppColors.black, fontSize: AppSizes.txt_12),
-                      TextStyle(
-                          color: AppColors.black, fontSize: AppSizes.txt_12)
-                    ],
-                    onToggle: (index) {
-                      if (index == 0 && Get.locale.languageCode == 'en') {
-                        UserPreferences.setLocale('ar', 'SA');
-                        Get.updateLocale(Locale('ar', 'SA'));
-                      } else {
-                        UserPreferences.setLocale('en', 'US');
-                        Get.updateLocale(Locale('en', 'US'));
-                      }
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SplashScreen()),
-                          (route) => false);
-                    },
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: ToggleSwitch(
+                      minHeight: AppSizes.h0_05,
+                      minWidth: AppSizes.w0_3,
+                      initialLabelIndex:
+                      Get.locale.languageCode == "ar" ? 0 : 1,
+                      cornerRadius: AppSizes.w0_3,
+                      activeFgColor: AppColors.red,
+                      inactiveBgColor: Colors.white,
+                      inactiveFgColor: Colors.white,
+                      totalSwitches: 2,
+                      labels: [
+                        'arabic_language_btn'.tr,
+                        'english_language_btn'.tr
+                      ],
+                      activeBgColors: [
+                        [AppColors.red],
+                        [AppColors.red]
+                      ],
+                      customTextStyles: [
+                        TextStyle(
+                            color: AppColors.black,
+                            fontSize: AppSizes.txt_12),
+                        TextStyle(
+                            color: AppColors.black, fontSize: AppSizes.txt_12)
+                      ],
+                      onToggle: (index) {
+                        if (index == 0 && Get.locale.languageCode == 'en') {
+                          UserPreferences.setLocale('ar', 'SA');
+                          Get.updateLocale(Locale('ar', 'SA'));
+                        } else {
+                          UserPreferences.setLocale('en', 'US');
+                          Get.updateLocale(Locale('en', 'US'));
+                        }
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SplashScreen()),
+                                (route) => false);
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              decoration: BoxDecoration(color: AppColors.colorPrimaryDark),
             ),
           ),
+
           ListTile(
             leading: AppSvg.load(
               selectedPage == 1
