@@ -57,9 +57,9 @@ class CompleteDataScreenState
     emailTextEditingController.text = widget.user.email;
     mobileTextEditingController.text = widget.user.mobile;
     companyTextEditingController.text = widget.user.company;
-    isEmployedChecked = widget.user.is_employed;
-    hasBankingObligationChecked = widget.user.has_banking_obligation;
-    isAdibCustomerChecked = widget.user.is_adib_customer;
+    isEmployedChecked = widget.user.is_employed??true;
+    hasBankingObligationChecked = widget.user.has_banking_obligation??true;
+    isAdibCustomerChecked = widget.user.is_adib_customer??true;
   }
 
   @override

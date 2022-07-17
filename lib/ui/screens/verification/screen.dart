@@ -122,14 +122,6 @@ class VerificationScreenState
                                     fontWeight: FontWeight.w400,
                                     fontFamily: 'din',
                                     fontSize: AppSizes.txt_16)),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppSizes.w0_016),
-                                  child:
-                                      AppSvg.load("assets/icons/ic_edit.svg")),
-                            ),
                             TextSpan(
                                 text: widget.mobile,
                                 style: TextStyle(

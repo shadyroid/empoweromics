@@ -25,8 +25,8 @@ class UserPreferences {
   }
 
   static Locale getLocale() => Locale(
-      _prefs.getString(CONSTANTS.LANGUAGE) ?? "ar",
-      _prefs.getString(CONSTANTS.COUNTRY) ?? "SA");
+      _prefs.getString(CONSTANTS.LANGUAGE) ?? "en",
+      _prefs.getString(CONSTANTS.COUNTRY) ?? "US");
 
 
   static void removeUser() => _prefs.clear();
